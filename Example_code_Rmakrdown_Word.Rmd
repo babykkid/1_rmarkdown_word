@@ -1,0 +1,77 @@
+---
+title: "Rmakrdown to word template"
+output: 
+  word_document:
+    toc: TRUE
+    reference_docx: "/Users/jiaqiliu/Library/CloudStorage/OneDrive-EmoryUniversity/Files/Jiaqi Liu/my_R/word-styles-reference-02.docx"
+date: "2023-09-21"
+---
+
+
+# NOTE in output
+- A word template is using narrow margin "/Users/jiaqiliu/Library/CloudStorage/OneDrive-EmoryUniversity/Files/Jiaqi Liu/my_R/word-styles-reference-02.docx", knitting with this template will default making the generated word document with narrow margin.
+
+# 1. Pre-setting for tables
+```{r}
+# A pre-setting for all flextable table format
+# Modify flextable defaults formatting properties ----
+init_flextable_defaults()
+set_flextable_defaults(
+  # font family
+  font.family = "Cambria",
+  # text align set to left align
+  text.align = "left",
+  # Other parameters
+  post_process_docx = function(x) {
+    # set font size for table header
+    x = fontsize(x, size = 12, part = "header") 
+    # Bold the table header
+    x = bold(x, bold = TRUE, part = "header")
+    # Add padding above for table header
+    x = padding(x, padding.top = 10, part = "header")
+    
+    # remove table footer
+    x = delete_part(x, part = "footer") 
+    # add inner border for tables
+    x = border_inner(
+        x, 
+        # border line set to black and width = 1
+        border = fp_border_default(color="black", width = 1), 
+        part = "all"
+        ) 
+    # add outer border for tables
+    x = border_outer(
+        x, 
+        # border line set to black and width = 1
+        border = fp_border_default(color="black", width = 1)
+        )
+    
+    # set fixed width of all tables to avoid it expand out of range
+    x = fit_to_width(x, 7.5)
+    
+    # return the object
+    x
+  }
+)
+```
+
+
+# 2. Example for table1 object
+```{r}
+table1(~ AGE + PTGENDER + PTEDUCAT + DX_bl|AT_subgroup, adni) %>%
+  # transform a table1 object to flextable object
+  t1flex()
+```
+
+# 3. Example for a data frame
+```{r}
+result %>%
+  as_flextable(
+    # remove column types
+    show_coltype = FALSE, 
+    # not limiting maximum number of row
+    # displaying all rows
+    max_row = Inf
+    )
+```
+
