@@ -7,6 +7,10 @@ output:
 date: "2023-09-21"
 ---
 
+```{r}
+library(flextable)
+library(table1)
+```
 
 # NOTE in output
 - A word template is using narrow margin "/Users/jiaqiliu/Library/CloudStorage/OneDrive-EmoryUniversity/Files/Jiaqi Liu/my_R/word-styles-reference-02.docx", knitting with this template will default making the generated word document with narrow margin.
